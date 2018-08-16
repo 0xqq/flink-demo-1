@@ -43,5 +43,6 @@ object CsvTableTest {
 
     env.setParallelism(1)
     env.execute("CsvTableTest")
+
   }
 }
