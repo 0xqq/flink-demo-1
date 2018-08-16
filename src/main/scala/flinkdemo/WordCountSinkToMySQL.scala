@@ -30,9 +30,9 @@ object WordCountSinkToMySQL {
 
     override def invoke(in: WordWithCount): Unit = {
       try {
-        ps.setString(1, in.word) //时间
-        ps.setLong(2, in.count) //分钟
-        ps.setString(3, format.format(new java.util.Date)) //窗口开始范围
+        ps.setString(1, in.word)
+        ps.setLong(2, in.count)
+        ps.setString(3, format.format(new java.util.Date))
         ps.executeUpdate()
 
       } catch {
