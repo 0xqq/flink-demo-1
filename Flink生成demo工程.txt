@@ -1,0 +1,5 @@
+﻿java:
+mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-java -DarchetypeVersion=1.4.1 -DgroupId=flink-demo -DartifactId=flink-demo -Dversion=0.1 -Dpackage=flinkdemo -DinteractiveMode=false
+
+scala:
+mvn archetype:generate -DarchetypeGroupId=org.apache.flink -DarchetypeArtifactId=flink-quickstart-scala -DarchetypeVersion=1.4.1 -DgroupId=flink-demo -DartifactId=flink-demo -Dversion=0.1 -Dpackage=flinkdemo -DinteractiveMode=false
