@@ -13,14 +13,11 @@ object CsvTableTest {
 
     val csvTableSource = CsvTableSource
       .builder
-      .path("D:\\IdeaProjects\\flink-demo\\pub_product_info.csv")
-      .field("prod_cd", Types.STRING)
-      .field("prod_nm", Types.STRING)
-      .field("prod_dept_cd", Types.STRING)
-      .field("prod_dept", Types.STRING)
-      .field("maintain_dt", Types.STRING)
-      .field("upd_dt", Types.STRING)
-      .field("upd_tm", Types.STRING)
+      .path("D:\\IdeaProjects\\flink-demo\\LoanStats3a.csv")
+      .field("installment", Types.DOUBLE)
+      .field("grade", Types.STRING)
+      .field("home_ownership", Types.STRING)
+      .field("loan_status", Types.STRING)
       .fieldDelimiter(",")
       .lineDelimiter("\n")
       .ignoreFirstLine
@@ -28,18 +25,18 @@ object CsvTableTest {
       .commentPrefix("%")
       .build
 
-    tableEnv.registerTableSource("pub_product_info", csvTableSource)
+    tableEnv.registerTableSource("LoanStats3a", csvTableSource)
 
-    //val result = tableEnv.sql("SELECT prod_dept, COUNT(prod_nm) AS prod_count FROM pub_product_info GROUP BY prod_dept")
+    //val result = tableEnv.sql("SELECT home_ownership,loan_status, SUM(installment) AS installment_sum FROM LoanStats3a WHERE loan_status in ('Charged Off','Fully Paid') GROUP BY home_ownership,loan_status")
 
-    val table = tableEnv.scan("pub_product_info")
+    val table = tableEnv.scan("LoanStats3a")
     val result = table
-      //.filter("prod_dept='产品一部'")
-      .groupBy("prod_dept")
-      .select("prod_dept, prod_nm.count AS prod_count");
+      .filter("loan_status='Charged Off' || loan_status='Fully Paid'")
+      .groupBy("home_ownership,loan_status")
+      .select("home_ownership,loan_status,installment.sum AS installment_sum");
 
     //创建一个 TableSink
-    val sink = new CsvTableSink("D:\\IdeaProjects\\flink-demo\\pub_product_info_output.csv", fieldDelim = ",", numFiles = 1, writeMode = WriteMode.OVERWRITE)
+    val sink = new CsvTableSink("D:\\IdeaProjects\\flink-demo\\LoanStats3a_output.csv", fieldDelim = ",", numFiles = 1, writeMode = WriteMode.OVERWRITE)
 
     // 将结果 Table写入TableSink中
     result.writeToSink(sink)
